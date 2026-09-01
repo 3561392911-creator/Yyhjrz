@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>红色留言大厅</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:"Microsoft Yahei",sans-serif}
+body{
+  background:linear-gradient(#7c0909,#3d0202);
+  min-height:100vh;
+  padding:25px;
+  color:#fff;
+}
+h2{
+  text-align:center;
+  letter-spacing:2px;
+  font-size:23px;
+  text-shadow:0 0 8px #ffadad;
+}
+.desc{
+  text-align:center;
+  font-size:14px;
+  opacity:0.8;
+  margin:10px 0 25px;
+}
+textarea{
+  width:100%;
+  height:120px;
+  border-radius:10px;
+  border:none;
+  padding:15px;
+  font-size:15px;
+  background:#fff8f8;
+  color:#222;
+  resize:none;
+}
+button{
+  width:100%;
+  margin-top:15px;
+  padding:13px;
+  font-size:16px;
+  border-radius:10px;
+  border:none;
+  background:#b81c1c;
+  color:#fff;
+  letter-spacing:2px;
+  cursor:pointer;
+  transition:0.2s;
+}
+button:hover{
+  background:#d12424;
+}
+.msg-wrap{
+  margin-top:25px;
+}
+.msg-item{
+  background:rgba(255,255,255,0.12);
+  padding:14px;
+  border-radius:9px;
+  margin-bottom:12px;
+  font-size:14px;
+  animation:fade 0.4s ease;
+}
+@keyframes fade{
+  from{opacity:0;transform:translateY(10px);}
+  to{opacity:1;transform:translateY(0);}
+}
+</style>
+</head>
+<body>
+<h2>红色初心 · 留言大厅</h2>
+<div class="desc">铭记英烈事迹，书写青春感悟</div>
+<textarea id="txt" placeholder="请在此写下你的感悟留言..."></textarea>
+<button id="subBtn">提交留言</button>
+<div class="msg-wrap" id="listBox"></div>
+
+<script>
+let data = JSON.parse(localStorage.getItem("redMsg") || "[]");
+const txt = document.getElementById("txt");
+const subBtn = document.getElementById("subBtn");
+const listBox = document.getElementById("listBox");
+
+function render(){
+  listBox.innerHTML = "";
+  data.forEach(item=>{
+    let div = document.createElement("div");
+    div.className = "msg-item";
+    div.innerText = item;
+    listBox.appendChild(div);
+  })
+}
+render();
+
+subBtn.onclick = ()=>{
+  let val = txt.value.trim();
+  if(!val){
+    alert("请输入留言内容！");
+    return;
+  }
+  data.unshift(val);
+  localStorage.setItem("redMsg",JSON.stringify(data));
+  txt.value = "";
+  render();
+}
+</script>
+</body>
+</html>
